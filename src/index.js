@@ -28,6 +28,7 @@ const yoga = createYoga({
       type Query {
       hello(name: String): String!
       getTodos: [Todo]!
+      getTodoById(id: Int): Todo!
         }`,
 
     // implémentation de notre contrat
