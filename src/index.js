@@ -23,6 +23,14 @@ const yoga = createYoga({
         name: String!
         content: String!
         status: todoStatusEnum!
+        user: User!
+      }
+
+      type User {
+        id: ID!
+        name: String!
+        email: String!
+        todos: [Todo]
       }
 
       type Query {
