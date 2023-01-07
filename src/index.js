@@ -1,5 +1,6 @@
 import { createSchema, createYoga } from 'graphql-yoga'
 import { createServer } from 'node:http'
+import { Query } from './resolvers/Query.mjs'
 
 const typeDef = "src/schema/schema.graphql"
 
@@ -11,13 +12,13 @@ const yoga = createYoga({
     typeDefs: /* GraphQL */`
 
       enum todoStatusEnum {
-        WITING
+        WAITING
         IN_PROGRESS
         CANCLED
         DONE
       }
     
-      type todo {
+      type Todo {
         id: ID!
         name: String!
         content: String!
@@ -26,13 +27,12 @@ const yoga = createYoga({
 
       type Query {
       hello(name: String): String!
+      getTodos: [Todo]!
         }`,
 
     // implémentation de notre contrat
     resolvers: {
-      Query: {
-        hello: (_,{name}) => `Hello ${name || "World!" }`
-      }
+      Query
     }
   })
 })
