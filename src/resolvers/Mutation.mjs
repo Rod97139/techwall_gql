@@ -1,5 +1,5 @@
 export const Mutation = {
-    addTodo: (parent, { addTodoInput }, { db }, info) => {
+    addTodo: (parent, { addTodoInput }, { db, pubsub }, info) => {
        // On doit tout d'abbord verifier que le userId est correct
        if (!existInArray(db.users, 'id', addTodoInput.userId)) {
           // Si ko
@@ -17,6 +17,7 @@ export const Mutation = {
                 ...addTodoInput
             }
             db.todos.push(newTodo)
+            pubsub.publish('todo',{todo: newTodo})
             return newTodo
        }
         

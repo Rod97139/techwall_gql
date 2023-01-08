@@ -1,12 +1,13 @@
-import { createSchema, createYoga } from 'graphql-yoga'
+import { createPubSub, createSchema, createYoga } from 'graphql-yoga'
 import { createServer } from 'node:http'
 import { db } from './db/db.mjs'
 import { Query } from './resolvers/Query.mjs'
 import { Todo } from './resolvers/Todo.mjs'
 import { User } from './resolvers/User.mjs'
 import { Mutation } from './resolvers/Mutation.mjs'
+import { Subscription } from './resolvers/Subscription.mjs'
 
-const typeDef = "src/schema/schema.graphql"
+const pubsub = createPubSub()
 
 const yoga = createYoga({
     
@@ -14,6 +15,26 @@ const yoga = createYoga({
   schema: createSchema({
     // Notre contrat ce que nous offrons à notre serveur GraphQL
     typeDefs: /* GraphQL */`
+
+        type Query {
+              hello(name: String): String!
+              getTodos: [Todo]!
+              getTodoById(id: Int): Todo!
+              getUsers: [User]!
+              getUserById(id: Int): User!
+                }
+        
+        type Mutation {
+          addTodo(addTodoInput: TodoAddInput): Todo! 
+          updateTodo(id: Int!, updateTodoInput: TodoUpdateInput!): Todo!
+          deleteTodo(id: Int!): Todo!
+
+        }
+
+        type Subscription {
+          todo: Todo!
+        }
+
 
       enum TodoStatusEnum {
         WAITING
@@ -36,21 +57,6 @@ const yoga = createYoga({
         email: String!
         todos: [Todo]
       }
-
-      type Query {
-      hello(name: String): String!
-      getTodos: [Todo]!
-      getTodoById(id: Int): Todo!
-      getUsers: [User]!
-      getUserById(id: Int): User!
-        }
-        
-      type Mutation {
-        addTodo(addTodoInput: TodoAddInput): Todo! 
-        updateTodo(id: Int!, updateTodoInput: TodoUpdateInput!): Todo!
-        deleteTodo(id: Int!): Todo!
-
-      }
       
       input TodoAddInput {
         name: String!
@@ -70,14 +76,18 @@ const yoga = createYoga({
     
     resolvers: {
       Query,
+      Mutation,
+      Subscription,
       Todo,
-      User,
-      Mutation
+      User
+      
+      
     }
 
   }),
   context: {
-    db
+    db,
+    pubsub
   }
 })
 
