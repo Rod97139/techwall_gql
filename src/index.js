@@ -1,6 +1,8 @@
 import { createSchema, createYoga } from 'graphql-yoga'
 import { createServer } from 'node:http'
 import { Query } from './resolvers/Query.mjs'
+import { Todo } from './resolvers/Todo.mjs'
+import { User } from './resolvers/User.mjs'
 
 const typeDef = "src/schema/schema.graphql"
 
@@ -37,11 +39,15 @@ const yoga = createYoga({
       hello(name: String): String!
       getTodos: [Todo]!
       getTodoById(id: Int): Todo!
+      getUsers: [User]!
+      getUserById(id: Int): User!
         }`,
 
     // implémentation de notre contrat
     resolvers: {
-      Query
+      Query,
+      Todo,
+      User
     }
   })
 })

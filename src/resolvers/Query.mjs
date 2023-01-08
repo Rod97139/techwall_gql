@@ -19,5 +19,17 @@ export const Query = {
             throw new Error(`Le todo d'id ${id} n'existe pas`)
         }
         return todo
+    },
+    getUsers: ( parent, args, context, info ) => {
+        return db.users
+    },
+    getUserById: ( parent, { id }, context, info ) => {
+        const user = db.users.find(
+            (user) => user.id === id
+        )
+        if (!user) {
+            throw new Error(`Le user d'id ${id} n'existe pas`)
+        }
+        return user
     }
   }
