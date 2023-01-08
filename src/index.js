@@ -4,6 +4,7 @@ import { db } from './db/db.mjs'
 import { Query } from './resolvers/Query.mjs'
 import { Todo } from './resolvers/Todo.mjs'
 import { User } from './resolvers/User.mjs'
+import { Mutation } from './resolvers/Mutation.mjs'
 
 const typeDef = "src/schema/schema.graphql"
 
@@ -42,13 +43,19 @@ const yoga = createYoga({
       getTodoById(id: Int): Todo!
       getUsers: [User]!
       getUserById(id: Int): User!
-        }`,
+        }
+        
+      type Mutation {
+        addTodo(name: String!, content: String!, userId: Int!): Todo! 
+
+      }`,
 
     
     resolvers: {
       Query,
       Todo,
-      User
+      User,
+      Mutation
     }
 
   }),
