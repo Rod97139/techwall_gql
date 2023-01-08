@@ -17,12 +17,12 @@ export const Mutation = {
                 ...addTodoInput
             }
             db.todos.push(newTodo)
-            pubsub.publish('todo',{todo: newTodo})
+            pubsub.publish('todo',{todo: {todo: newTodo, mutation: "ADD"}})
             return newTodo
        }
         
     },
-    updateTodo: (parent, { id, updateTodoInput }, { db }, info) => {
+    updateTodo: (parent, { id, updateTodoInput }, { db, pubsub }, info) => {
         if (updateTodoInput.userId && !existInArray(db.users, 'id', updateTodoInput.userId)) {
               throw new Error('L\'id user ne match pas')
         }else{
@@ -33,16 +33,20 @@ export const Mutation = {
                 for(let key in updateTodoInput) {
                     todo[key] = updateTodoInput[key]
                 }
+                
+                pubsub.publish('todo',{todo: {todo, mutation: "UPDATE"}})
+                return todo
             }
-            return todo
+            
         }
     },
-    deleteTodo:(parent, { id }, { db }, info) => {
+    deleteTodo:(parent, { id }, { db, pubsub }, info) => {
         const indexTodo = db.todos.findIndex((todo) => todo.id === id)
         if (indexTodo === -1) {
             throw new Error('Todo inexistant')
         }else{
             const [todo] = db.todos.splice(indexTodo, 1);
+            pubsub.publish('todo',{todo: {todo, mutation: "DELETE"}})
             return todo
         }
     }

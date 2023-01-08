@@ -32,7 +32,18 @@ const yoga = createYoga({
         }
 
         type Subscription {
+          todo: TodoSubcriptionPayLoad!
+        }
+
+        type TodoSubcriptionPayLoad {
           todo: Todo!
+          mutation: MutationOperationType!
+        }
+
+        enum MutationOperationType {
+          UPDATE
+          DELETE
+          ADD
         }
 
 
