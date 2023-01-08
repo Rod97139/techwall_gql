@@ -46,9 +46,17 @@ const yoga = createYoga({
         }
         
       type Mutation {
-        addTodo(name: String!, content: String!, userId: Int!): Todo! 
+        addTodo(addTodoInput: TodoAddInput): Todo! 
 
-      }`,
+      }
+      
+      input TodoAddInput {
+        name: String!
+        content: String!
+        userId: Int!
+      }
+
+      `,
 
     
     resolvers: {

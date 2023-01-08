@@ -1,7 +1,7 @@
 export const Mutation = {
-    addTodo: (parent, {name, content, userId}, { db }, info) => {
+    addTodo: (parent, { addTodoInput }, { db }, info) => {
        // On doit tout d'abbord verifier que le userId est correct
-       if (!db.users.some((user) => user.id === userId)) {
+       if (!db.users.some((user) => user.id === addTodoInput.userId)) {
           // Si ko
             //déclencher une erreur
             throw new Error('L\'id user ne match pas')
@@ -14,9 +14,7 @@ export const Mutation = {
             const newTodo = {
                 id: db.todos[db.todos.length -1].id +1,
                 status: 'WAITING',
-                name,
-                content,
-                userId
+                ...addTodoInput
             }
             db.todos.push(newTodo)
             return newTodo
