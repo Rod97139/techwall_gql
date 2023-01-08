@@ -15,7 +15,7 @@ const yoga = createYoga({
     // Notre contrat ce que nous offrons à notre serveur GraphQL
     typeDefs: /* GraphQL */`
 
-      enum todoStatusEnum {
+      enum TodoStatusEnum {
         WAITING
         IN_PROGRESS
         CANCLED
@@ -26,7 +26,7 @@ const yoga = createYoga({
         id: ID!
         name: String!
         content: String!
-        status: todoStatusEnum!
+        status: TodoStatusEnum!
         user: User!
       }
 
@@ -47,6 +47,8 @@ const yoga = createYoga({
         
       type Mutation {
         addTodo(addTodoInput: TodoAddInput): Todo! 
+        updateTodo(id: Int!, updateTodoInput: TodoUpdateInput!): Todo!
+        deleteTodo(id: Int!): Todo!
 
       }
       
@@ -54,6 +56,13 @@ const yoga = createYoga({
         name: String!
         content: String!
         userId: Int!
+      }
+      
+      input TodoUpdateInput {
+        name: String
+        content: String
+        userId: Int
+        status: TodoStatusEnum
       }
 
       `,
