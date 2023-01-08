@@ -1,15 +1,13 @@
-import { db } from "../db/db.mjs"
-
 export const Query = {
     hello: (_,{name}) => `Hello ${name || "World!" }`,
-    getTodos: ( parent, args, context, info ) => {
+    getTodos: ( parent, args, { db }, info ) => {
         // console.log(parent);
         // console.log(args);
         // console.log(context);
         // console.log('info', info);
         return db.todos
     },
-    getTodoById: ( parent, { id }, context, info ) => {
+    getTodoById: ( parent, { id }, { db }, info ) => {
         // console.log(id);
 
         const todo = db.todos.find(
@@ -20,15 +18,15 @@ export const Query = {
         }
         return todo
     },
-    getUsers: ( parent, args, context, info ) => {
+    getUsers: ( parent, args, { db }, info ) => {
         return db.users
     },
-    getUserById: ( parent, { id }, context, info ) => {
+    getUserById: ( parent, { id }, { db }, info ) => {
         const user = db.users.find(
             (user) => user.id === id
         )
         if (!user) {
-            throw new Error(`Le user d'id ${id} n'existe pas`)
+            throw new Error(`Le user d'id ${ id } n'existe pas`)
         }
         return user
     }
